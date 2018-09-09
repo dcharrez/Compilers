@@ -3,6 +3,7 @@
 
 using namespace std;
 
+bool sendErrorMessage();
 bool isIdentifier(string  str);
 bool isNumber(string str);
 bool isReservedWord(string str);
@@ -17,6 +18,7 @@ int main(int argc, char const *argv[]) {
 
 	cin >> str;
 	cout << isIdentifier(str) << endl;
+	cout << isNumber(str) << endl;
 	// cout << str.length() << endl;
 	// cout << str[3] << endl;
 
@@ -26,6 +28,11 @@ int main(int argc, char const *argv[]) {
 	// cout << isDigit(c) << endl;
 	
 	return 0;
+}
+
+bool sendErrorMessage() {
+	cout << "Error" << endl;
+	return false;
 }
 
 bool isIdentifier(string  str) {
@@ -40,29 +47,59 @@ bool isIdentifier(string  str) {
 				else  if( isDigit(str[currentIndex]) )
 					state = 2;
 				else
-					cout << "ERROR case 1, not digit nor letter"<< endl;	
+					return sendErrorMessage();	
 				currentIndex++; break;
 			case 2:
-				cout << "ERROR case 2, not digit nor letter" << endl;
-				currentIndex++; break;
+				return sendErrorMessage();	
 			case 3:
 				if( isLetter(str[currentIndex]) )
 					state = 3;
 				else if( isDigit )
 					state = 3;
 				else
-					cout << " ERROR case 3" << endl;
+					return sendErrorMessage();	
 				currentIndex++; break;
 		}
 	}
 	if(state != 3 ) {
-		cout << "Error" << endl; return false;
+		return sendErrorMessage();	
 	}
 	else
 		return true;
 }
 
-bool isNumber(string str);
+bool isNumber(string str) {
+	int state = 1;
+	int strLen = str.length();
+	int currentIndex = 0;
+	while(currentIndex < strLen) {
+		switch(state) {
+			case 1:
+				if( isLetter(str[currentIndex]) )
+					state = 2;
+				else  if( isDigit(str[currentIndex]) )
+					state = 3;
+				else
+					return sendErrorMessage();	
+				currentIndex++; break;
+			case 2:
+				return sendErrorMessage();	
+			case 3:
+				if( isLetter(str[currentIndex]) )
+					state = 2;
+				else if( isDigit(str[currentIndex]) )
+					state = 3;
+				else
+					return sendErrorMessage();	
+				currentIndex++; break;
+		}
+	}
+	if(state != 3 ) {
+		return sendErrorMessage();	
+	}
+	else
+		return true;
+}
 bool isReservedWord(string str);
 
 bool isLetter(char c) {
