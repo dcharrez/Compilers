@@ -15,6 +15,8 @@ enum reserverdWords { r_while, r_for, r_if, r_else };
 enum others { op_parentheses, cl_parentheses, op_brackets, cl_brackets,
 			  period, comma, op_quotation, cl_quotation, colon, semicolon };
 
+enum commend { singleLineCommend, op_commend, cl_commend };
+
 
 void scanner(string fileName);
 void show(int id_token);
@@ -43,6 +45,10 @@ bool isColon(string token);
 bool isSemicolon(string token);
 bool isComma(string token);
 bool isPeriod(string token);
+
+bool isSingleLineCommend(string token);
+bool isOpCommend(string token);
+bool isClCommend(string token);
 
 bool isLetter(char c);
 bool isDigit(char c);
@@ -226,6 +232,25 @@ bool isComma(string token) {
 
 bool isPeriod(string token) {
 	if( token == "." )
+		return true;
+	return false;
+}
+
+
+bool isSingleLineCommend(string token) {
+	if( token == "//" )
+		return true;
+	return false;
+}
+
+bool isOpCommend(string token) {
+	if( token == "/*" )
+		return true;
+	return false;
+}
+
+bool isClCommend(string token) {
+	if( token == "*/" )
 		return true;
 	return false;
 }
