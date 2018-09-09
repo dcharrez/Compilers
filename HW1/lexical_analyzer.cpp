@@ -3,13 +3,27 @@
 
 using namespace std;
 
+double** table;
+
 bool sendErrorMessage();
+
+// automata
+
 bool isIdentifier(string  str);
 bool isNumber(string str);
 bool isReservedWord_While(string str);
 
+// transition table
+
+bool isIdentifier_table(string  str);
+bool isNumber_table(string str);
+bool isReservedWord_While_table(string str);
+
+
 bool isLetter(char c);
 bool isDigit(char c);
+
+void createTransitionTable();
 
 int main(int argc, char const *argv[]) {
 
@@ -17,16 +31,12 @@ int main(int argc, char const *argv[]) {
 	string str;
 
 	cin >> str;
-	cout << isIdentifier(str) << endl;
-	cout << isNumber(str) << endl;
-	cout << isReservedWord_While(str) << endl;
-	// cout << str.length() << endl;
-	// cout << str[3] << endl;
+	// cout << isIdentifier(str) << endl;
+	// cout << isNumber(str) << endl;
+	// cout << isReservedWord_While(str) << endl;
 
-
-	// cin >> c;
-	// cout << isLetter(c) << endl;
-	// cout << isDigit(c) << endl;
+	createTransitionTable();
+	cout << isIdentifier_table(str) << endl;
 	
 	return 0;
 }
@@ -142,3 +152,48 @@ bool isDigit(char c) {
 		return true;
 	return false;
 }
+
+void createTransitionTable() {
+	int rows = 3;
+	int columns = 3;
+	table = new double*[rows];
+	for( int i = 0; i < rows; i++ )
+		table[i] = new double[columns];
+
+	table[0][0] = 2;
+	table[0][1] = 1;
+	table[0][2] = 0;
+	table[1][0] = 0;
+	table[1][1] = 0;
+	table[1][2] = 0;
+	table[2][0] = 2;
+	table[2][1] = 2;
+	table[2][2] = 3;
+
+}
+
+bool isIdentifier_table(string  str) {
+	int state = 0;
+	int input;
+	int strLen = str.length();
+	// 0 letter as input 1 digit as input 2 EOF
+	for (int i = 0; i < strLen; ++i) {
+		if( isLetter(str[i]) ) {
+			input = 0;
+		} else if( isDigit(str[i]) ) {
+			input = 1;
+		} else
+			return sendErrorMessage();
+		state = table[state][input];
+		//cout << "state " << state << endl;
+		if(state == 1)
+			return sendErrorMessage();
+	}
+	if( state == 2 )
+		return true;
+	return false;
+	cout << "asdasd" << endl;
+}
+
+bool isNumber_table(string str);
+bool isReservedWord_While_table(string str);
