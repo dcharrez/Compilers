@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
+#include <vector>
 using namespace std;
 
 #define num_id 1
@@ -38,7 +42,13 @@ void scanner(string fileName) {
 }
 
 void proccessLine(string line) {
-	cout << line << endl;
+	istringstream iss(line);
+	vector<string> tokens{istream_iterator<string>{iss},
+                      istream_iterator<string>{}};
+
+    for (int i = 0; i < tokens.size(); ++i) {
+    	lexicalAnalyzer(tokens[i]);
+    }
 }
 
 void show(int id_token, string lexeme) {
