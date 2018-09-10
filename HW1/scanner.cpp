@@ -46,6 +46,8 @@ bool isSemicolon(string token);
 bool isComma(string token);
 bool isPeriod(string token);
 
+bool isOperator(string token);
+
 bool isSingleLineCommend(string token);
 bool isOpCommend(string token);
 bool isClCommend(string token);
@@ -75,25 +77,70 @@ void scanner(string fileName) {
 }
 
 void proccessLine(string line) {
+	string buffer = "";
+	char whatsAhead;
 	for (int i = 0; i < line.size(); ++i) {
-		
+		char ch = line[i];
+		string ahead = string(1,line[i+1]);
+		if( ch != ' ' ) {
+			if(ch == '(' || ch == ')' || ch == ',' || ch == '{' ||
+			ch == '}' || ch == '+' || ch == '-' || ch == '*' ||
+			 ch == '/' || ch == '&' || ch == '=' || ch == '|' ||
+			  ch == ';' ) {
+				cout << "Token => Symbol " << ch << endl;
+
+				buffer = "";
+			}
+			else if( isDigit(ch) ) {
+				buffer += ch;
+				if( isDigit(line[i+1]) ) {
+					buffer += line[i+1];
+					i++;
+				} else {
+					cout << "Token => Number " << buffer << endl;
+					string buffer = "";
+				}
+
+			} else if( isLetter(ch) ) {
+				buffer += ch;
+				if( isLetter(line[i+1]) ) {
+					buffer += line[i+1];
+					i++;
+					if( isWhile(buffer) ) {
+						cout << "Token => WHILE " << buffer << endl;
+						buffer = "";
+					}
+					else if( isFor(buffer)) {
+						cout << "Token => FOR " << buffer << endl;
+						buffer = "";
+					}
+					else if( isIf(buffer) ) {
+						cout << "Token = IF " << buffer << endl;
+						buffer = "";
+					}
+					else if( isElse(buffer) ) {
+						cout << "Token => FOR " << buffer << endl;
+						buffer = "";
+					}
+					else {
+						cout << "Token => ID " << buffer << endl;
+						buffer = "";
+					}
+				} else if( line[i+1] == ' ' || 
+						isOperator(ahead) ) {
+					cout << "TOKEN =< operator " << ch << endl;
+				}
+			}
+		}
 	}
-
-
-	// istringstream iss(line);
-	// vector<string> tokens{istream_iterator<string>{iss},
- //                      istream_iterator<string>{}};
-
- //    for (int i = 0; i < tokens.size(); ++i) {
- //    	lexicalAnalyzer(tokens[i]);
- //    }
 }
 
-void show(int id_token, string lexeme) {
-	switch(id_token) {
-		case num_id:
-			cout << "Token = NUM " << lexeme << endl;  
-	}
+bool isOperator(string token) {
+	if( isLess(token) || isLessEquall(token) || isGreatherEqual(token) ||
+		isGreater(token) || isEqual(token) || isAssign(token) )
+		return true;
+	else
+		return false;
 }
 
 bool isLetter(char c) {
