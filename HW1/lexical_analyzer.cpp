@@ -33,18 +33,18 @@ int main(int argc, char const *argv[]) {
 	string str;
 
 	cin >> str;
-	cout << isIdentifier(str) << endl;
-	cout << isNumber(str) << endl;
-	cout << isReservedWord_While(str) << endl;
+	cout << "IDENTIFIER W automata -> " << isIdentifier(str) << endl;
+	cout << "NUMBER W automata -> " <<isNumber(str) << endl;
+	cout << "WHILE W automata -> " <<isReservedWord_While(str) << endl;
 
 	createTransitionTable_ID();
-	cout << isIdentifier_table(str) << endl;
+	cout << "IDENTIFIER W table -> " << isIdentifier_table(str) << endl;
 
 	createTransitionTable_NUM();
-	cout << isNumber_table(str) << endl;
+	cout << "NUMBER W table ->" << isNumber_table(str) << endl;
 
 	createTransitionTable_IF();
-	cout << isReservedWord_IF_table(str) << endl;
+	cout << "IF W table -> "<<isReservedWord_IF_table(str) << endl;
 	
 	return 0;
 }

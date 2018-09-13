@@ -18,8 +18,8 @@ using namespace std;
 map <string, int> classes = {{"keyword",0},{"operator_",0},{"number",0},
 				{"integer",0},{"real",0},{"identifier",0},{"alpha",0}};
 vector<string> ints={"0","1","2","3","4","5","6","7","8","9"}; 
-vector<string> keywords={"if","else","then","begin","end"}; 
-vector<string> operator_={"(",")","[","]","+","=",",","-",";"}; 
+vector<string> keywords={"if","else","then","begin","end","while"}; 
+vector<string> operator_={"(",")","[","]","+","=",",","-",";", "==","<=",">="}; 
 vector<string> alpha={"a","b","c","d","e","f","g","h","i","j","k","l",
 				"m","n","o","p","q","r","s","t","u","v","w","x","y","z"}; 
 vector<std::string>::iterator iter;
@@ -46,6 +46,7 @@ bool isInteger(string ch);
 bool isReal(string ch);
 bool isAlpha(string ch);
 bool isChar(string ch);
+bool isComm(string ch);
 
 int main(int argc, char *argv[])  {
 	int tokenCount = 0;
@@ -54,27 +55,36 @@ int main(int argc, char *argv[])  {
 	char  *pch;
   
 	while (inFile.getline(line, 80)) { 
-		pch = strtok(line, " 	~`!@#$^&*_{}:<>|?");
-		while (pch != NULL) {
-			if (isKeyword(pch))
-				cnt_keyword++;
-			else if (isoperator_(pch))
-				cnt_operator_++;
-			else if (isChar(pch))
-				cnt_char++;
-			else if (isnumber(pch))
-				cnt_number++;
-			else if (isInteger(pch))
-				cnt_integer++;
-			else if (isReal(pch))
-				cnt_real++;
-			else if (isAlpha(pch))
-				cnt_alpha++;
-			pch = strtok (NULL, "    ~`!@#$^&*_{}:<>|?");
+		pch = strtok(line, " 	~`!@#$^&*_{}:|?");
+		if( ! isComm(line)) {
+			while (pch != NULL) {
+				if (isKeyword(pch))
+					cnt_keyword++;
+				else if (isoperator_(pch))
+					cnt_operator_++;
+				else if (isChar(pch))
+					cnt_char++;
+				else if (isnumber(pch))
+					cnt_number++;
+				else if (isInteger(pch))
+					cnt_integer++;
+				else if (isReal(pch))
+					cnt_real++;
+				else if (isAlpha(pch))
+					cnt_alpha++;
+				pch = strtok (NULL, "    ~`!@#$^&*_{}:|?");
+			}
 		}
+
 	}
 	inFile.close();
 	return 0;
+}
+
+bool isComm(string ch) {
+	if( ch[0] == '/' and ch[1] == '/')
+		return true;
+	return false;
 }
 
 bool isKeyword(string ch) {
