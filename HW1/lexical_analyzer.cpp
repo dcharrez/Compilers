@@ -33,9 +33,9 @@ int main(int argc, char const *argv[]) {
 	string str;
 
 	cin >> str;
-	// cout << isIdentifier(str) << endl;
-	// cout << isNumber(str) << endl;
-	// cout << isReservedWord_While(str) << endl;
+	cout << isIdentifier(str) << endl;
+	cout << isNumber(str) << endl;
+	cout << isReservedWord_While(str) << endl;
 
 	createTransitionTable_ID();
 	cout << isIdentifier_table(str) << endl;
@@ -83,8 +83,11 @@ bool isIdentifier(string  str) {
 	if(state != 3 ) {
 		return sendErrorMessage();	
 	}
-	else
+	else {
+		if( str == "while" or str == "if" )
+			return false;
 		return true;
+	}
 }
 
 bool isNumber(string str) {
@@ -143,7 +146,7 @@ bool isReservedWord_While(string str) {
 				currentIndex++; break;
 		}
 	}
-	if(state != 3 or currentIndex+1 != reservedWord.length()) {
+	if(state != 3 or currentIndex+1 < reservedWord.length()) {
 		return sendErrorMessage();	
 	}
 	else
@@ -232,8 +235,11 @@ bool isIdentifier_table(string  str) {
 		if(state == 1)
 			return sendErrorMessage();
 	}
-	if( state == 2 )
+	if( state == 2 ) {
+		if( str == "while" or str == "if" )
+			return false;
 		return true;
+	}
 }
 
 bool isNumber_table(string str) {
@@ -272,6 +278,7 @@ bool isReservedWord_IF_table(string str) {
 		if(state == 1)
 			return sendErrorMessage();
 	}
-	if( state == 2 )
+	if( state == 2 ) {
 		return true;
+	}
 }
