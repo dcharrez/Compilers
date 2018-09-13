@@ -171,9 +171,10 @@ bool isInteger(char c) {
 bool isChar(string ch) {
 	bool ischar=false;
 
-	if(  !(ch[0]>'a' and ch[0]<'z') )
-		return false;
 
+	if(  !(ch[0]>='a' and ch[0]<='z') ) {
+		return false;
+	}
 	for(int i=0;  i< ch.length(); i++ ) {
 		if( isalpha(ch[i]) or isInteger(ch[i]) )
 			ischar = true;
