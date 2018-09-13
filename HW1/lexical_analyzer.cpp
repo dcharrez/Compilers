@@ -37,11 +37,11 @@ int main(int argc, char const *argv[]) {
 	// cout << isNumber(str) << endl;
 	// cout << isReservedWord_While(str) << endl;
 
-	// createTransitionTable_ID();
-	// cout << isIdentifier_table(str) << endl;
+	createTransitionTable_ID();
+	cout << isIdentifier_table(str) << endl;
 
-	// createTransitionTable_NUM();
-	// cout << isNumber_table(str) << endl;
+	createTransitionTable_NUM();
+	cout << isNumber_table(str) << endl;
 
 	createTransitionTable_IF();
 	cout << isReservedWord_IF_table(str) << endl;
@@ -50,7 +50,7 @@ int main(int argc, char const *argv[]) {
 }
 
 bool sendErrorMessage() {
-	cout << "Error" << endl;
+	// cout << "Error" << endl;
 	return false;
 }
 
