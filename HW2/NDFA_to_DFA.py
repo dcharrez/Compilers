@@ -76,6 +76,7 @@ class DFA:
 		self.start_state = 0
 		self.transitions = []
 		self.q = []
+		self.fout = 0
 
 	def eps_closure(self, nfa, node_set):
 		if node_set == set([]):
@@ -101,9 +102,14 @@ class DFA:
 						res.add(next[0])
 		return res
 
+	def write(self, s):
+		if self.fout:
+			self.fout.write(s)
+		else:
+			print(s),
+
 	def convert_from_nfa(self, NFA):
-		self.symbols = NFA.symbols
-		self.start_state = NFA.start_state
+		self.fout = open(out_fileName, 'w')
 		nfa = {}
 		lit = set([])
 		for transition in NFA.transitions:
@@ -123,6 +129,8 @@ class DFA:
 		mid_node = []
 		print( "NFA ", nfa )
 		print( "Q ", q)
+		self.write("States\n")
+		co = 0
 		while q:
 			now = q.pop(0)
 			i = status.index(now)
@@ -133,8 +141,12 @@ class DFA:
 				end_node.append(i)
 			else:
 				mid_node.append(i)
-			print("NOW: ", now, end=' ')
+			self.write(str(co)+" = ")
+			for ms in now:
+				self.write(ms + ' ')
+			self.write('\n')
 			dfa_str += now_index + end_str + ' '
+			print("aaaaa ", dfa_str)
 			next_dict = {}
 			for c in liter:
 				next = self.eps_closure(nfa, self.next_set(nfa, now, c))
@@ -147,6 +159,8 @@ class DFA:
 				next_dict[c] = j
 			dfa_str += '\n'
 			dfa[i] = next_dict
+			co+=1
+
 		print('\ns %s\n%s\n' % (' '.join(liter), dfa_str))
 
 	
@@ -154,6 +168,6 @@ if __name__ == '__main__':
 	nfa = NFA()
 	dfa = DFA()
 	nfa.nfa_from_file(in_fileName)
-	nfa.print_nfa()
+	# nfa.print_nfa()
 	dfa.convert_from_nfa(nfa)
 	# dfa.print_dfa()
