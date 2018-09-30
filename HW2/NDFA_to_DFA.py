@@ -126,7 +126,6 @@ class DFA:
 		dfa_str = ''
 		dfa = {}
 		end_node = []
-		mid_node = []
 		print( "NFA ", nfa )
 		print( "Q ", q)
 		self.write("States\n")
@@ -136,17 +135,16 @@ class DFA:
 			i = status.index(now)
 			now_index = '%d' % i
 			end_str = ''
-			if END in now:
-				end_str = '*'
-				end_node.append(i)
-			else:
-				mid_node.append(i)
+
 			self.write(str(co)+" = ")
 			for ms in now:
 				self.write(ms + ' ')
 			self.write('\n')
+			if END in now:
+				end_str = '*'
+				self.write("Accepting States\n"+str(co))
+				end_node.append(i)
 			dfa_str += now_index + end_str + ' '
-			print("aaaaa ", dfa_str)
 			next_dict = {}
 			for c in liter:
 				next = self.eps_closure(nfa, self.next_set(nfa, now, c))
@@ -160,7 +158,8 @@ class DFA:
 			dfa_str += '\n'
 			dfa[i] = next_dict
 			co+=1
-
+		self.write("Transitions")
+		print("aa", dfa_str)
 		print('\ns %s\n%s\n' % (' '.join(liter), dfa_str))
 
 	
